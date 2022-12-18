@@ -9,8 +9,7 @@ DEFAULT_WORKERS = 50
 async def fetch_url(url, session):
     async with session.get(url) as resp:
         data = await resp.read()
-        print(resp.status, len(data))
-
+        print(resp.status, len(data), 1)
         return len(data) 
 
 
@@ -38,7 +37,6 @@ async def fetch_batch_urls(queue, workers):
 async def main(filepath, workers):
     with open(filepath, 'r') as f:
         urls_queue = asyncio.Queue()
-        assert 1 == 2
         for new_url in f:
             await urls_queue.put(new_url)
         await fetch_batch_urls(urls_queue, workers)

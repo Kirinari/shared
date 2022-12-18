@@ -19,9 +19,9 @@ class TestFetch(IsolatedAsyncioTestCase):
     
     @mock.patch("fetcher.aiohttp.ClientSession.get")
     def test_fetch_url_results_side(self, m_get):
-        TEST_WORKERS = self.n_links // 2
+        TEST_WORKERS = self.n_links // 1
         TEST_PATH = self.path
-        m_get.return_value = mock.Mock(read="some data", status="200")
+        m_get.return_value = mock.AsyncMock(read="some data", status=200)
         asyncio.run(main(TEST_PATH, TEST_WORKERS))
 
 
