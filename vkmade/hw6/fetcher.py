@@ -7,13 +7,11 @@ import argparse
 DEFAULT_WORKERS = 50
 
 async def fetch_url(url, session):
-    print(1)
     async with session.get(url) as resp:
         data = await resp.read()
         print(resp.status, len(data))
 
         return len(data) 
-    prin(2)
 
 
 async def worker(queue, session):
