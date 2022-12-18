@@ -13,7 +13,7 @@ async def fetch_url(url, session):
         print(resp.status, len(data))
 
         return len(data) 
-    prin(2)
+    print(2)
 
 
 async def worker(queue, session):
