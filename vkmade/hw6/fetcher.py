@@ -38,6 +38,7 @@ async def fetch_batch_urls(queue, workers):
 async def main(filepath, workers):
     with open(filepath, 'r') as f:
         urls_queue = asyncio.Queue()
+        assert 1 == 2
         for new_url in f:
             await urls_queue.put(new_url)
         await fetch_batch_urls(urls_queue, workers)
