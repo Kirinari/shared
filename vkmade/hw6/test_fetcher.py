@@ -12,7 +12,7 @@ class TestFetch(unittest.TestCase):
     def test_get_fetch_results(self):
         TEST_WORKERS = self.n_links // 1
         TEST_PATH = self.path
-        with mock.patch("fetcher.fetch_url.session.get") as m_get:
+        with mock.patch("fetcher.aiohttp.ClientSession.get") as m_get:
             m_get.return_value = mock.Mock(read="some data", status="200")
     
     @mock.patch("fetcher.aiohttp.ClientSession.get")
