@@ -4,9 +4,9 @@ import url_maker
 from fetcher import fetch_url
 
 class TestFetch(IsolatedAsyncioTestCase):
-    def setUp(self) -> None:
-        self.path = url_maker.PATH
-        self.n_links = url_maker.N_LINKS
+    # def setUp(self) -> None:
+    #     self.path = url_maker.PATH
+    #     self.n_links = url_maker.N_LINKS
 
     def test_get_fetch_results(self):
         TEST_WORKERS = self.n_links // 1
