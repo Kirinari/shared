@@ -6,18 +6,18 @@ import argparse
 wrk = 0
 DEFAULT_WORKERS = 50
 
-async def fetch_url(url, session, worker_number=0):
+async def fetch_url(url, session):
     async with session.get(url) as resp:
         data = await resp.read()
-        print(resp.status, len(data), worker_number)
+        print(resp.status, len(data))
         return len(data)
 
 
-async def worker(queue, session, worker_number=0):
+async def worker(queue, session):
     while True:
         url = await queue.get()
         try:
-            res = await fetch_url(url, session, worker_number=worker_number)
+            res = await fetch_url(url, session)
         finally:
             queue.task_done()
 
@@ -25,7 +25,7 @@ async def worker(queue, session, worker_number=0):
 async def fetch_batch_urls(queue, workers):
     async with aiohttp.ClientSession() as session:
         tasks = [
-            asyncio.create_task(worker(queue, session, worker_number=i))
+            asyncio.create_task(worker(queue, session))
             for i in range(workers)
         ]
 
