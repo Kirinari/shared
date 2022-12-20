@@ -7,8 +7,14 @@ wrk = 0
 DEFAULT_WORKERS = 50
 
 async def fetch_url(url, session):
-    async with session.get(url) as resp:
+    # async with session.get(url) as resp:
+    #     data = await resp.read()
+    #     return len(data)
+    resp = await session.get(url)
+    print(1)
+    async with resp:
         data = await resp.read()
+        print(resp.status, len(data))
         return len(data)
 
 
