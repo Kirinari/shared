@@ -6,23 +6,18 @@ import argparse
 wrk = 0
 DEFAULT_WORKERS = 50
 
-async def fetch_url(url, session):
-    # async with session.get(url) as resp:
-    #     data = await resp.read()
-    #     return len(data)
-    resp = await session.get(url)
-    print(1)
-    async with resp:
+async def fetch_url(url, session, worker_number=0):
+    async with session.get(url) as resp:
         data = await resp.read()
-        print(resp.status, len(data))
+        print(resp.status, len(data), worker_number)
         return len(data)
 
 
-async def worker(queue, session):
+async def worker(queue, session, worker_number=0):
     while True:
         url = await queue.get()
         try:
-            res = await fetch_url(url, session)
+            res = await fetch_url(url, session, worker_number=worker_number)
         finally:
             queue.task_done()
 
@@ -30,7 +25,7 @@ async def worker(queue, session):
 async def fetch_batch_urls(queue, workers):
     async with aiohttp.ClientSession() as session:
         tasks = [
-            asyncio.create_task(worker(queue, session))
+            asyncio.create_task(worker(queue, session, worker_number=i))
             for i in range(workers)
         ]
 
@@ -63,11 +58,10 @@ if __name__ == "__main__":
     filepath = namespace.filepath
     WORKERS = namespace.count[0]
 
-
     if namespace.time:
         t1 = time.time()
 
-    asyncio.run(main(filepath, WORKERS))
+    asyncio.get_event_loop().run_until_complete(main(filepath, WORKERS))
 
     if namespace.time:
         print(time.time() - t1)

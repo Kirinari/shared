@@ -1,4 +1,4 @@
-base = "https://ru.wikipedia.org/wiki/500_год"
+base = "https://en.wikipedia.org/wiki/AD_500"
 N_LINKS = 10
 PATH = "url.txt"
 with open(PATH, "w", encoding="utf-8") as f:
