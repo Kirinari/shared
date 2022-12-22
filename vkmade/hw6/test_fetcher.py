@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock, IsolatedAsyncioTestCase
 import url_maker
-from fetcher import main, worker
+from fetcher import main, worker, QUEUE_MAXSIZE
 import asyncio
 
 class AsyncContextManager:
@@ -79,7 +79,7 @@ class TestFetch(IsolatedAsyncioTestCase):
 
         m_worker.side_effect = side_effect_worker
         asyncio.get_event_loop().run_until_complete(main(TEST_PATH, TEST_WORKERS))
-        self.assertEqual( m_worker.call_count, TEST_WORKERS)
+        self.assertEqual(m_worker.call_count, QUEUE_MAXSIZE * TEST_WORKERS)
     
 if __name__ == '__main__':
     unittest.main()

@@ -3,8 +3,8 @@ import asyncio
 import time
 import sys
 import argparse
-wrk = 0
 DEFAULT_WORKERS = 50
+QUEUE_MAXSIZE = 10
 
 async def fetch_url(url, session):
     async with session.get(url) as resp:
@@ -36,10 +36,11 @@ async def fetch_batch_urls(queue, workers):
 
 async def main(filepath, workers):
     with open(filepath, 'r') as f:
-        urls_queue = asyncio.Queue()
+        urls_queue = asyncio.Queue(maxsize=QUEUE_MAXSIZE)
         for new_url in f:
             await urls_queue.put(new_url)
-        await fetch_batch_urls(urls_queue, workers)
+            if urls_queue.full():
+                await fetch_batch_urls(urls_queue, workers)
 
 
 def createParser():
